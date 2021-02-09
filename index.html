@@ -1,0 +1,47 @@
+<body>
+    <p>hello world</p>
+
+    <button id="meme">yeet</button>
+
+    <script>
+        var btn = document.getElementById("meme");
+        var cnt = 1;
+        btn.addEventListener("click", function () {
+            btn.style.fontSize = cnt + "00px";
+            cnt++;
+        });
+    </script>
+
+
+    <button id="bomb">boom</button>
+
+    <script>
+        var boomer = document.getElementById("bomb");
+        boomer.addEventListener("click", function () {
+            var body = document.body;
+            body.parentElement.removeChild(body);
+        })
+    </script>
+
+    <br>
+    <br>
+
+    <button id="copy">ctrlc</button>
+    <div id="ccloc"></div>
+
+    <script>
+        var copy = document.getElementById("copy");
+        var ccloc = document.getElementById("ccloc");
+        var html = document.getElementsByTagName("html")[0];
+        copy.addEventListener("click", function () {
+            ccloc.innerHTML = html.innerHTML;
+        })
+    </script>
+
+    
+    <script>
+        console.log("error");
+    </script>
+
+    
+</body>
