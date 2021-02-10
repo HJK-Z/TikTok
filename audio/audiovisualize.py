@@ -40,7 +40,6 @@ class AudioBar:
         self.height = clamp(self.min_height, self.max_height, self.height)
 
     def render(self, screen):
-
         pygame.draw.rect(
             screen,
             self.color,
