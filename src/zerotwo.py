@@ -1,6 +1,9 @@
+import os
 import librosa
 import numpy as np
 import pygame
+import time
+import cv2
 
 
 def normalize(val, omn, omx):
@@ -8,7 +11,7 @@ def normalize(val, omn, omx):
 
 
 def getColorNorm(height, mn, mx):
-    return (0, 0, 255 * normalize(height, mn, mx))
+    return (0, 0, np.clip(255 * normalize(height, mn, mx), 0, 255))
 
 
 class AudioBar:
@@ -53,8 +56,10 @@ class AudioBar:
         )
 
 
-filename = "audio\zerotwo.wav"
-time_series, sample_rate = librosa.load(filename)
+audiopath = "media\zerotwo.wav"
+videopath = "media\zerotwo.mp4"
+
+time_series, sample_rate = librosa.load(audiopath)
 stft = np.abs(librosa.stft(time_series, hop_length=512, n_fft=2048 * 4))
 
 spectrogram = librosa.amplitude_to_db(stft, ref=np.max)
@@ -73,6 +78,7 @@ def get_decibel(target_time, freq):
         int(target_time * time_index_ratio)
     ]
 
+os.environ['SDL_VIDEO_WINDOW_POS']="%d,%d"%(2200,500)
 
 pygame.init()
 pygame.display.set_caption("#obsessed with this")
@@ -94,14 +100,17 @@ width = screen_w / r
 x = (screen_w - width * r) / 2
 
 for c in frequencies:
-    bars.append(AudioBar(x, 0, c, (0, 0, 0), max_height=400, width=width))
+    bars.append(AudioBar(x, 0, c, (0, 0, 0), max_height=500, width=width))
     x += width
 
 t = pygame.time.get_ticks()
 getTicksLastFrame = t
 
-pygame.mixer.music.load(filename)
+pygame.mixer.music.load(audiopath)
 pygame.mixer.music.play(0)
+
+cap = cv2.VideoCapture(videopath)
+vidrefresh = time.time()
 
 running = True
 while running:
@@ -120,6 +129,14 @@ while running:
         b.update(deltaTime, db)
         b.render(screen)
 
+    curtime = time.time()
+    if curtime-vidrefresh>.0155 and cap.isOpened():
+        ret, frame = cap.read()
+        cv2.imshow("zero two ;)", frame)
+        vidrefresh = curtime
+
     pygame.display.flip()
 
 pygame.quit()
+cap.release()
+cv2.destroyAllWindows()
