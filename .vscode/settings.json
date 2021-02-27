@@ -1,4 +1,5 @@
 {
     "python.formatting.provider": "black",
-    "python.pythonPath": "d:\\Python\\Interpreter\\Python3.7\\Scripts\\python.exe"
+    "python.pythonPath": "d:\\Python\\Interpreter\\Python3.7\\Scripts\\python.exe",
+    "terminal.integrated.fontSize": 50
 }

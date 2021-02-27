@@ -1,5 +1,5 @@
-import PIL.Image
-import cv2
+import os, time
+from PIL import Image, ImageSequence
 
 ASCII_CHARS = ["@", "#", "$", "%", "?", "*", "+", ";", ":", ",", "."]
 
@@ -23,23 +23,28 @@ def pixel_to_ascii(image):
 
 
 def main():
-    path = "media\plep.jpg"
-    try:
-        image = PIL.Image.open(path)
-    except:
-        print(path, "Unable to find image ")
+    path = os.getcwd()
+    fpath = path + "/media/nya.gif"
 
-    image = resize(image)
-    greyscale_image = to_greyscale(image)
-    ascii_str = pixel_to_ascii(greyscale_image)
-    img_width = greyscale_image.width
-    ascii_str_len = len(ascii_str)
-    ascii_img = ""
-    
-    for i in range(0, ascii_str_len, img_width):
-        ascii_img += ascii_str[i : i + img_width] + "\n"
+    gif = Image.open(fpath)
 
-    
+    ind = 1
+    for frame in ImageSequence.Iterator(gif):
+        image = resize(frame, 200)
+        image = to_greyscale(image)
+
+        ascii_str = pixel_to_ascii(image)
+        img_width = image.width
+        ascii_str_len = len(ascii_str)
+        ascii_img = ""
+
+        for i in range(0, ascii_str_len, img_width):
+            ascii_img += ascii_str[i : i + img_width] + "\n"
+
+        with open(path + "/media/nya/gif" + str(ind) + ".txt", "w") as f:
+            f.write(ascii_img)
+        
+        ind += 1
 
 
 main()

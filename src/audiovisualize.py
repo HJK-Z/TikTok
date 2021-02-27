@@ -47,7 +47,7 @@ class AudioBar:
         )
 
 
-filename = "audio/somebs.wav"
+filename = "media/somebs.wav"
 time_series, sample_rate = librosa.load(filename)
 stft = np.abs(librosa.stft(time_series, hop_length=512, n_fft=2048 * 4))
 
